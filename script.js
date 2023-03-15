@@ -8,12 +8,14 @@ const coordinates = {
 
 }
 
+const result = document.querySelector(".result");
+const scorespan = document.querySelector(".currentscore");
 
 //뺑뺑이 돌리기
     //바위 -266px
     //보자기 -515px
 let computersChoice = `rock`
-
+let currentComputersChoice;
 image.style.backgroundImage = `url(${imageUrl})`
 image.style.backgroundPositionX = `${coordinates[computersChoice]}`
 image.style.backgroundSize = `auto 230px`
@@ -28,15 +30,20 @@ function roll(){
 
         case 'rock':
             image.style.backgroundPositionX = `${coordinates[computersChoice]}`
+            currentComputersChoice = 0;
             computersChoice=`scissors`
             break;
         case 'scissors':
             image.style.backgroundPositionX = `${coordinates[computersChoice]}`
+            currentComputersChoice = 1;
             computersChoice='paper'
+
             break;
         case 'paper':
             image.style.backgroundPositionX = `${coordinates[computersChoice]}`
+            currentComputersChoice = -1;
             computersChoice = 'rock'
+
             break;
     }
 
@@ -49,21 +56,49 @@ for(i=0; i<btn.length; i++){
     btn[i].addEventListener("click",btnClick);
 }
 
-function btnClick(){
+function btnClick(event){
     clearInterval(setIntervalID);
     setTimeout(()=>{
         clearInterval(setIntervalID);
         setIntervalID = setInterval(roll,50);
         
     },2000);
-    printResult();
+    printResult(event);
 
 
 }
 
-printResult(){
+printResult(eventHappened){
 
-    const result 
+    const clickedButton = eventHappened.target.textContent
+    let clickedButtonValue;
+    let score = 0 ;
+    let message = scorespan.innerText;
+    
+    switch(clickedButton){
+        case '가위':
+            clickedButtonValue = 1
+            break;
+        case '바위':
+            clickedButtonValue = 0;
+            break;
+        case '보':
+            clickedButtonValue = -1
+            break;
+    }
+
+        let diff = clickedButtonValue - currentComputersChoice
+
+        if ([2, -1].includes(diff)) {
+            score += 1;
+            message = '승리';
+        } else if ([-2, 1].includes(diff)) {
+            score -= 1;
+            message = '패배';
+        } else {
+            message = '무승부';
+        }
+
  
 
 }
